@@ -16,8 +16,6 @@ public final class SustainConfig {
             .getConfigDir().resolve("noteblock-sustain.properties");
 
     private static boolean enabled = true;
-    // Note Block Master has two sustained samples for harp, bass, and flute.
-    // Variant 1 is the shorter original sustain setting; variant 2 is longer.
     private static int variant = 1;
 
     private SustainConfig() {}
@@ -34,7 +32,7 @@ public final class SustainConfig {
                 );
             }
         } else {
-            saveDefaults();
+            save();
         }
 
         enabled = Boolean.parseBoolean(properties.getProperty("enabled", "true"));
@@ -50,13 +48,6 @@ public final class SustainConfig {
         }
     }
 
-    private static void saveDefaults() {
-        Properties properties = new Properties();
-        properties.setProperty("enabled", "true");
-        properties.setProperty("variant", "1");
-        write(properties);
-    }
-
     public static boolean isEnabled() {
         return enabled;
     }
@@ -65,15 +56,25 @@ public final class SustainConfig {
         return variant;
     }
 
+    public static void setEnabled(boolean value) {
+        enabled = value;
+        save();
+    }
+
+    public static void setVariant(int value) {
+        variant = Math.max(1, Math.min(2, value));
+        save();
+    }
+
     public static void toggleEnabled() {
-        enabled = !enabled;
+        setEnabled(!enabled);
+    }
+
+    private static void save() {
         Properties properties = new Properties();
         properties.setProperty("enabled", Boolean.toString(enabled));
         properties.setProperty("variant", Integer.toString(variant));
-        write(properties);
-    }
 
-    private static void write(Properties properties) {
         try {
             Files.createDirectories(PATH.getParent());
             try (Writer writer = Files.newBufferedWriter(PATH, StandardCharsets.UTF_8)) {
