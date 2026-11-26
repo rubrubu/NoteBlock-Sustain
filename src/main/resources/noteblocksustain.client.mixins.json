@@ -3,7 +3,8 @@
   "package": "com.rubrubu.noteblocksustain.mixin",
   "compatibilityLevel": "JAVA_25",
   "client": [
-    "ClientPacketListenerMixin"
+    "ClientPacketListenerMixin",
+    "SustainToggleKeyMixin"
   ],
   "injectors": {
     "defaultRequire": 1
