@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "noteblocksustain",
+  "version": "${version}",
+  "name": "NoteBlock Sustain",
+  "description": "Adds configurable sustain and a release fade to Minecraft Note Block sounds.",
+  "authors": ["rubrubu"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.rubrubu.noteblocksustain.NoteBlockSustainClient"
+    ]
+  },
+  "mixins": [
+    {
+      "config": "noteblocksustain.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.20.1",
+    "minecraft": "~26.2",
+    "java": ">=25"
+  }
+}
