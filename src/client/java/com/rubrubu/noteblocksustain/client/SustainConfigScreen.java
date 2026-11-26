@@ -31,7 +31,7 @@ public final class SustainConfigScreen extends Screen {
         }).bounds(centerX - 100, centerY - 12, 200, 20).build());
 
         addRenderableWidget(Button.builder(Component.literal("Done"), button ->
-                this.minecraft.setScreen(parent)
+                this.minecraft.gui.setScreen(parent)
         ).bounds(centerX - 100, centerY + 30, 200, 20).build());
     }
 
@@ -45,6 +45,6 @@ public final class SustainConfigScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 }
