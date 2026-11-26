@@ -54,16 +54,7 @@ public final class SustainConfig {
         Properties properties = new Properties();
         properties.setProperty("enabled", "true");
         properties.setProperty("variant", "1");
-
-        try {
-            Files.createDirectories(PATH.getParent());
-            try (Writer writer = Files.newBufferedWriter(PATH, StandardCharsets.UTF_8)) {
-                properties.store(writer,
-                        "NoteBlock Sustain settings. Restart Minecraft after editing.");
-            }
-        } catch (IOException exception) {
-            NoteBlockSustainMod.LOGGER.warn("Could not create config file {}.", PATH, exception);
-        }
+        write(properties);
     }
 
     public static boolean isEnabled() {
@@ -72,5 +63,24 @@ public final class SustainConfig {
 
     public static int getVariant() {
         return variant;
+    }
+
+    public static void toggleEnabled() {
+        enabled = !enabled;
+        Properties properties = new Properties();
+        properties.setProperty("enabled", Boolean.toString(enabled));
+        properties.setProperty("variant", Integer.toString(variant));
+        write(properties);
+    }
+
+    private static void write(Properties properties) {
+        try {
+            Files.createDirectories(PATH.getParent());
+            try (Writer writer = Files.newBufferedWriter(PATH, StandardCharsets.UTF_8)) {
+                properties.store(writer, "NoteBlock Sustain settings.");
+            }
+        } catch (IOException exception) {
+            NoteBlockSustainMod.LOGGER.warn("Could not save config file {}.", PATH, exception);
+        }
     }
 }
