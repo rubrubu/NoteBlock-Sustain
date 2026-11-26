@@ -36,7 +36,7 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     // Compile against Mod Menu, but do not bundle it. The integration is optional.
-    modCompileOnly "maven.modrinth:modmenu:20.0.3"
+    compileOnly "maven.modrinth:modmenu:20.0.3"
 
     noteBlockMasterAssets "maven.modrinth:SC2NerDG:KZC6xIse"
 }
