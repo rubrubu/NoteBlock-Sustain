@@ -1,12 +1,16 @@
 # NoteBlock Sustain
 
-A client-side Fabric mod for Minecraft Java 26.2 that makes vanilla Note Block sounds last longer.
+A client-side Fabric mod for Minecraft Java 26.2 that replaces vanilla Note Block sound packets with Note Block Master's original sustained audio samples.
 
-## What it does
+## Scope
 
-When a vanilla Note Block sound starts, the mod makes that sound instance loop for a configurable hold period, then fades its volume down during a configurable release period.
+- Replaces the audio for the 16 vanilla Note Block instruments.
+- Uses the original dedicated sustained OGG samples from Note Block Master 0.8.1.
+- Preserves the sound packet's instrument, source, volume, pitch, and position.
+- Runs entirely on the client. A server such as DonutSMP does not need this mod installed; only the player running this client hears the replacement audio.
+- Does not add blocks, items, tuning cores, composer tools, extended note range, extra octaves, or a pitch-limit mixin.
 
-**Audio behavior:** this is sample looping, not true time-stretching or a piano-style sustain pedal. The original sound sample restarts at its loop point, so some instruments may have a noticeable repetition. The original instrument, pitch, volume, and location are retained.
+The mod intercepts the incoming clientbound Note Block sound packet before Minecraft creates the vanilla sound instance. It then plays a local replacement sound and cancels the vanilla packet's normal sound handling.
 
 ## Requirements
 
@@ -14,23 +18,31 @@ When a vanilla Note Block sound starts, the mod makes that sound instance loop f
 - Fabric Loader 0.20.1 or newer
 - Java 25
 
-Fabric API is not required. The mod is client-side. Other players will only hear the sustained effect if they also install it.
+## Installation
+
+1. Install Fabric for Minecraft 26.2.
+2. Put the built `noteblock-sustain-2.0.0.jar` in the instance's `mods` folder.
+3. Launch the Fabric profile. No server-side installation is required.
 
 ## Configuration
 
-On first launch, the mod creates `config/noteblock-sustain.properties`.
+After the first launch, edit `config/noteblock-sustain.properties`:
 
 ```properties
 enabled=true
-sustainSeconds=3.0
-releaseSeconds=0.35
+variant=1
 ```
 
-- `enabled`: enables or disables the effect.
-- `sustainSeconds`: how long the note loops before release (0.1–30 seconds).
-- `releaseSeconds`: fade-out duration (0–10 seconds).
+- `enabled`: turns the replacement sounds on or off.
+- `variant`: chooses the sample variant for harp, bass, and flute. Set to `1` or `2`. Instruments with a single sustained sample always use that sample.
 
 Restart Minecraft after editing the file.
+
+## Audio assets and license
+
+The sustained OGG files are from **Note Block Master 0.8.1** by **Nayrus**, distributed under **GNU GPL version 3 only**. They are sourced from the exact 0.8.1 release artifact, pinned by Modrinth version ID `KZC6xIse`, and extracted at build time. The build uses only the OGG files; it does not package Note Block Master's NeoForge classes, blocks, items, or pitch-range changes.
+
+Because the redistributed audio is GPL-3.0-only, this project is also distributed under GPL-3.0-only. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).
 
 ## Build
 
@@ -40,10 +52,10 @@ Use JDK 25 and Gradle 9.8.2:
 gradle build
 ```
 
-The output JAR is in `build/libs/`. GitHub Actions builds the project on each push and pull request and uploads the JAR as a workflow artifact.
+The build downloads the pinned Note Block Master 0.8.1 archive as a build-only asset source, extracts only its sustained OGG files, then packages the Fabric mod. The NeoForge mod itself is not a runtime dependency.
 
-## Version 1.0.1
+The resulting JAR is written to `build/libs/`. GitHub Actions builds the project on pushes and pull requests and uploads the JAR as an artifact.
 
-Fixes a crash when the client receives a Note Block sound packet. The earlier version called `AbstractSoundInstance#getVolume()` before Minecraft had resolved the sound asset. This version copies the instance's raw configured volume instead, before sound resolution.
+## Compatibility notes
 
-The project must still be tested in-game after installation. Sample looping may sound less natural on some instruments.
+This implementation is designed for Minecraft 26.2 Fabric and server-side vanilla Note Block sound packets. It has no server mod or custom payload dependency. Compilation and packet interception can be verified in CI, but final confirmation still requires an in-game test on a local world and DonutSMP.

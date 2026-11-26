@@ -10,12 +10,34 @@ base {
 }
 
 repositories {
-    // Loom provides Minecraft and Fabric repositories.
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
+}
+
+configurations {
+    // Build-only dependency. We extract only the original OGG assets from the
+    // pinned Note Block Master 0.8.1 JAR; none of its NeoForge classes are used.
+    noteBlockMasterAssets {
+        canBeConsumed = false
+        canBeResolved = true
+        transitive = false
+    }
 }
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    noteBlockMasterAssets "maven.modrinth:SC2NerDG:KZC6xIse"
 }
 
 loom {
@@ -29,8 +51,26 @@ loom {
     }
 }
 
+// Pull the GPL-3.0-only sustained OGGs from the exact Note Block Master 0.8.1
+// release supplied as the reference. Only assets/noteblockmaster/sounds/*.ogg
+// are copied into our namespace. The original mod classes are never packaged.
+def generatedNbmAudio = layout.buildDirectory.dir("generated/noteblockmaster-audio")
+sourceSets.main.resources.srcDir(generatedNbmAudio)
+
+tasks.register("extractNoteBlockMasterAudio", Copy) {
+    from({ zipTree(configurations.noteBlockMasterAssets.singleFile) }) {
+        include "assets/noteblockmaster/sounds/sustained_*.ogg"
+        eachFile { details ->
+            details.path = "assets/noteblocksustain/sounds/${details.name}"
+        }
+        includeEmptyDirs = false
+    }
+    into generatedNbmAudio
+}
+
 def modVersion = project.version.toString()
 processResources {
+    dependsOn tasks.named("extractNoteBlockMasterAudio")
     inputs.property "version", modVersion
     filesMatching("fabric.mod.json") {
         expand "version": modVersion

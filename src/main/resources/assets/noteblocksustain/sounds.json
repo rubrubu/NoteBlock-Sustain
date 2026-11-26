@@ -1,0 +1,59 @@
+{
+  "sustained_harp1": {
+    "sounds": ["noteblocksustain:sustained_harp1"]
+  },
+  "sustained_harp2": {
+    "sounds": ["noteblocksustain:sustained_harp2"]
+  },
+  "sustained_bass1": {
+    "sounds": ["noteblocksustain:sustained_bass1"]
+  },
+  "sustained_bass2": {
+    "sounds": ["noteblocksustain:sustained_bass2"]
+  },
+  "sustained_flute1": {
+    "sounds": ["noteblocksustain:sustained_flute1"]
+  },
+  "sustained_flute2": {
+    "sounds": ["noteblocksustain:sustained_flute2"]
+  },
+  "sustained_basedrum": {
+    "sounds": ["noteblocksustain:sustained_basedrum"]
+  },
+  "sustained_snare": {
+    "sounds": ["noteblocksustain:sustained_snare"]
+  },
+  "sustained_hat": {
+    "sounds": ["noteblocksustain:sustained_hat"]
+  },
+  "sustained_guitar": {
+    "sounds": ["noteblocksustain:sustained_guitar"]
+  },
+  "sustained_bell": {
+    "sounds": ["noteblocksustain:sustained_bell"]
+  },
+  "sustained_chime": {
+    "sounds": ["noteblocksustain:sustained_chime"]
+  },
+  "sustained_xylophone": {
+    "sounds": ["noteblocksustain:sustained_xylophone"]
+  },
+  "sustained_ironxylophone": {
+    "sounds": ["noteblocksustain:sustained_ironxylophone"]
+  },
+  "sustained_cowbell": {
+    "sounds": ["noteblocksustain:sustained_cowbell"]
+  },
+  "sustained_didgeridoo": {
+    "sounds": ["noteblocksustain:sustained_didgeridoo"]
+  },
+  "sustained_bit": {
+    "sounds": ["noteblocksustain:sustained_bit"]
+  },
+  "sustained_banjo": {
+    "sounds": ["noteblocksustain:sustained_banjo"]
+  },
+  "sustained_pling": {
+    "sounds": ["noteblocksustain:sustained_pling"]
+  }
+}

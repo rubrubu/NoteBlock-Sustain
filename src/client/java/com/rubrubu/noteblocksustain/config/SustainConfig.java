@@ -1,6 +1,6 @@
 package com.rubrubu.noteblocksustain.config;
 
-import com.rubrubu.noteblocksustain.NoteBlockSustainClient;
+import com.rubrubu.noteblocksustain.NoteBlockSustainMod;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -11,62 +11,58 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
-/** Simple user-editable config stored in config/noteblock-sustain.properties. */
 public final class SustainConfig {
     private static final Path PATH = FabricLoader.getInstance()
             .getConfigDir().resolve("noteblock-sustain.properties");
 
     private static boolean enabled = true;
-    private static double sustainSeconds = 3.0;
-    private static double releaseSeconds = 0.35;
+    // Note Block Master has two sustained samples for harp, bass, and flute.
+    // Variant 1 is the shorter original sustain setting; variant 2 is longer.
+    private static int variant = 1;
 
     private SustainConfig() {}
 
     public static void load() {
         Properties properties = new Properties();
+
         if (Files.exists(PATH)) {
             try (Reader reader = Files.newBufferedReader(PATH, StandardCharsets.UTF_8)) {
                 properties.load(reader);
             } catch (IOException exception) {
-                NoteBlockSustainClient.LOGGER.warn("Could not read {}. Using defaults.", PATH, exception);
+                NoteBlockSustainMod.LOGGER.warn(
+                        "Could not read {}. Using default settings.", PATH, exception
+                );
             }
+        } else {
+            saveDefaults();
         }
 
         enabled = Boolean.parseBoolean(properties.getProperty("enabled", "true"));
-        sustainSeconds = clamp(parseDouble(properties, "sustainSeconds", 3.0), 0.1, 30.0);
-        releaseSeconds = clamp(parseDouble(properties, "releaseSeconds", 0.35), 0.0, 10.0);
-
-        if (!Files.exists(PATH)) {
-            saveDefaults();
-        }
+        variant = parseVariant(properties.getProperty("variant", "1"));
     }
 
-    private static double parseDouble(Properties properties, String key, double fallback) {
+    private static int parseVariant(String value) {
         try {
-            return Double.parseDouble(properties.getProperty(key, Double.toString(fallback)).trim());
+            return Math.max(1, Math.min(2, Integer.parseInt(value.trim())));
         } catch (RuntimeException exception) {
-            NoteBlockSustainClient.LOGGER.warn("Invalid value for '{}'; using {}.", key, fallback);
-            return fallback;
+            NoteBlockSustainMod.LOGGER.warn("Invalid sustain variant '{}'; using variant 1.", value);
+            return 1;
         }
-    }
-
-    private static double clamp(double value, double min, double max) {
-        if (!Double.isFinite(value)) return min;
-        return Math.max(min, Math.min(max, value));
     }
 
     private static void saveDefaults() {
         Properties properties = new Properties();
         properties.setProperty("enabled", "true");
-        properties.setProperty("sustainSeconds", "3.0");
-        properties.setProperty("releaseSeconds", "0.35");
+        properties.setProperty("variant", "1");
+
         try {
             Files.createDirectories(PATH.getParent());
             try (Writer writer = Files.newBufferedWriter(PATH, StandardCharsets.UTF_8)) {
-                properties.store(writer, "NoteBlock Sustain settings. Restart Minecraft after editing.");
+                properties.store(writer,
+                        "NoteBlock Sustain settings. Restart Minecraft after editing.");
             }
         } catch (IOException exception) {
-            NoteBlockSustainClient.LOGGER.warn("Could not create config file {}.", PATH, exception);
+            NoteBlockSustainMod.LOGGER.warn("Could not create config file {}.", PATH, exception);
         }
     }
 
@@ -74,11 +70,7 @@ public final class SustainConfig {
         return enabled;
     }
 
-    public static int getSustainTicks() {
-        return Math.max(1, (int) Math.round(sustainSeconds * 20.0));
-    }
-
-    public static int getReleaseTicks() {
-        return Math.max(0, (int) Math.round(releaseSeconds * 20.0));
+    public static int getVariant() {
+        return variant;
     }
 }

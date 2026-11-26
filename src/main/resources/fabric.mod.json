@@ -3,11 +3,14 @@
   "id": "noteblocksustain",
   "version": "${version}",
   "name": "NoteBlock Sustain",
-  "description": "Adds configurable sustain and a release fade to Minecraft Note Block sounds.",
-  "authors": ["rubrubu"],
-  "license": "MIT",
+  "description": "Client-side Note Block sustain using the original Note Block Master sustained audio samples.",
+  "authors": ["rubrubu", "Nayrus (original sustained audio assets)"],
+  "license": "GPL-3.0-only",
   "environment": "client",
   "entrypoints": {
+    "main": [
+      "com.rubrubu.noteblocksustain.NoteBlockSustainMod"
+    ],
     "client": [
       "com.rubrubu.noteblocksustain.NoteBlockSustainClient"
     ]
