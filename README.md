@@ -26,7 +26,7 @@ The mod intercepts the incoming clientbound Note Block sound packet before Minec
 
 ## Configuration
 
-After the first launch, edit `config/noteblock-sustain.properties`:
+When Mod Menu is installed, open **Mods → NoteBlock Sustain → Configure** to change the settings in-game. The settings save automatically. Mod Menu is optional; without it, you can edit `config/noteblock-sustain.properties` manually:
 
 ```properties
 enabled=true
@@ -35,6 +35,8 @@ variant=1
 
 - `enabled`: turns the replacement sounds on or off.
 - `variant`: chooses the sample variant for harp, bass, and flute. Set to `1` or `2`. Instruments with a single sustained sample always use that sample.
+
+This release does not use a keyboard shortcut to toggle sustain.
 
 Restart Minecraft after editing the file.
 
