@@ -42,6 +42,6 @@ gradle build
 
 The output JAR is in `build/libs/`. GitHub Actions builds the project on each push and pull request and uploads the JAR as a workflow artifact.
 
-## Status
+## Development status
 
-Initial source implementation. It still needs a successful CI build and an in-game audio test before it can be considered a verified release.
+The project builds successfully in GitHub Actions against Minecraft 26.2 and Java 25. The JAR has been packaged and its mod metadata and classes have been checked. It still needs an in-game audio test; sample looping may sound less natural on some instruments.
