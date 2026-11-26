@@ -86,3 +86,9 @@ java {
     targetCompatibility = JavaVersion.VERSION_25
     withSourcesJar()
 }
+
+// The generated audio directory is also part of the main resource source set,
+// so the sources archive must wait for the asset extraction task as well.
+tasks.named("sourcesJar") {
+    dependsOn tasks.named("extractNoteBlockMasterAudio")
+}
