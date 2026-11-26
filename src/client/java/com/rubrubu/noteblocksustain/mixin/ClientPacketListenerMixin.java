@@ -30,10 +30,8 @@ public abstract class ClientPacketListenerMixin {
             return;
         }
 
-        Identifier vanillaSoundId = packet.getSound()
-                .unwrapKey()
-                .map(key -> key.location())
-                .orElse(null);
+        // SoundEvent is a record in Minecraft 26.2; its location is the registry id.
+        Identifier vanillaSoundId = packet.getSound().value().location();
 
         if (vanillaSoundId == null) {
             return;
