@@ -2,6 +2,7 @@ package com.rubrubu.noteblocksustain.mixin;
 
 import com.rubrubu.noteblocksustain.config.SustainConfig;
 import com.rubrubu.noteblocksustain.sound.SustainedNoteSound;
+import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,7 +18,9 @@ public abstract class SoundManagerMixin {
             ordinal = 0
     )
     private SoundInstance noteblocksustain$extendNoteBlockSound(SoundInstance original) {
-        if (original == null || original instanceof SustainedNoteSound || !SustainConfig.isEnabled()) {
+        if (!(original instanceof AbstractSoundInstance abstractOriginal)
+                || original instanceof SustainedNoteSound
+                || !SustainConfig.isEnabled()) {
             return original;
         }
 
@@ -27,7 +30,7 @@ public abstract class SoundManagerMixin {
         }
 
         return new SustainedNoteSound(
-                original,
+                abstractOriginal,
                 SustainConfig.getSustainTicks(),
                 SustainConfig.getReleaseTicks()
         );

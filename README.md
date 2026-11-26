@@ -42,6 +42,8 @@ gradle build
 
 The output JAR is in `build/libs/`. GitHub Actions builds the project on each push and pull request and uploads the JAR as a workflow artifact.
 
-## Development status
+## Version 1.0.1
 
-The project builds successfully in GitHub Actions against Minecraft 26.2 and Java 25. The JAR has been packaged and its mod metadata and classes have been checked. It still needs an in-game audio test; sample looping may sound less natural on some instruments.
+Fixes a crash when the client receives a Note Block sound packet. The earlier version called `AbstractSoundInstance#getVolume()` before Minecraft had resolved the sound asset. This version copies the instance's raw configured volume instead, before sound resolution.
+
+The project must still be tested in-game after installation. Sample looping may sound less natural on some instruments.

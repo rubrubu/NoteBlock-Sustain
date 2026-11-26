@@ -3,7 +3,8 @@
   "package": "com.rubrubu.noteblocksustain.mixin",
   "compatibilityLevel": "JAVA_25",
   "client": [
-    "SoundManagerMixin"
+    "SoundManagerMixin",
+    "AbstractSoundInstanceAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

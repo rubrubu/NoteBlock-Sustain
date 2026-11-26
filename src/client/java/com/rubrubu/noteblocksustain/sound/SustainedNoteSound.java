@@ -1,9 +1,8 @@
 package com.rubrubu.noteblocksustain.sound;
 
+import com.rubrubu.noteblocksustain.mixin.AbstractSoundInstanceAccessor;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
-import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.resources.sounds.TickableSoundInstance;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 
 /**
@@ -19,13 +18,17 @@ public final class SustainedNoteSound extends AbstractSoundInstance implements T
     private int age;
     private boolean stopped;
 
-    public SustainedNoteSound(SoundInstance original, int sustainTicks, int releaseTicks) {
+    public SustainedNoteSound(AbstractSoundInstance original, int sustainTicks, int releaseTicks) {
         super(original.getIdentifier(), original.getSource(), RandomSource.create());
         this.sustainTicks = Math.max(1, sustainTicks);
         this.releaseTicks = Math.max(0, releaseTicks);
-        this.startingVolume = original.getVolume();
 
-        this.volume = original.getVolume();
+        // Do not call original.getVolume() here. SoundManager invokes this mixin before
+        // the original sound's Sound object has been resolved, so getVolume() can NPE.
+        float rawVolume = ((AbstractSoundInstanceAccessor) original).noteblocksustain$getRawVolume();
+        this.startingVolume = rawVolume;
+        this.volume = rawVolume;
+
         this.pitch = original.getPitch();
         this.x = original.getX();
         this.y = original.getY();
