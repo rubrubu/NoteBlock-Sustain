@@ -3,7 +3,8 @@
   "package": "com.rubrubu.noteblocksustain.mixin",
   "compatibilityLevel": "JAVA_25",
   "client": [
-    "ClientPacketListenerMixin"
+    "ClientPacketListenerMixin",
+    "MinecraftClientTickMixin"
   ],
   "injectors": {
     "defaultRequire": 1
