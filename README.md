@@ -60,7 +60,7 @@ The resulting JAR is written to `build/libs/`. GitHub Actions builds the project
 
 ## Audio playback safety
 
-Replacement Note Block sounds are queued and played at the end of the client tick rather than immediately inside the incoming sound-packet handler. This avoids changing Minecraft's active-sound collection while its sound engine is iterating it.
+Replacement Note Block sounds are queued by the incoming sound-packet handler and flushed at the tail of `SoundEngine.tick`, immediately after Minecraft finishes iterating its active-sound collection. This avoids concurrent modification while minimizing extra playback delay.
 
 ## Compatibility notes
 
