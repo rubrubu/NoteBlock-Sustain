@@ -58,6 +58,10 @@ The build downloads the pinned Note Block Master 0.8.1 archive as a build-only a
 
 The resulting JAR is written to `build/libs/`. GitHub Actions builds the project on pushes and pull requests and uploads the JAR as an artifact.
 
+## Audio playback safety
+
+Replacement Note Block sounds are queued and played at the end of the client tick rather than immediately inside the incoming sound-packet handler. This avoids changing Minecraft's active-sound collection while its sound engine is iterating it.
+
 ## Compatibility notes
 
 This implementation is designed for Minecraft 26.2 Fabric and server-side vanilla Note Block sound packets. It has no server mod or custom payload dependency. Compilation and packet interception can be verified in CI, but final confirmation still requires an in-game test on a local world and DonutSMP.
