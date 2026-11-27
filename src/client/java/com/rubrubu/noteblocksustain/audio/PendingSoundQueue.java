@@ -7,9 +7,9 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Defers replacement sound playback until the end of the client tick.
- * SoundManager.play mutates the active-sound collection, so it must not be
- * called while SoundEngine is iterating that collection.
+ * Queues replacement sounds until SoundEngine has finished iterating its
+ * active-sound collection for the current tick. Playback is flushed at the
+ * tail of SoundEngine.tick to minimize timing drift.
  */
 public final class PendingSoundQueue {
     private static final Queue<SimpleSoundInstance> PENDING = new ConcurrentLinkedQueue<>();
