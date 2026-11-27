@@ -1,8 +1,8 @@
 package com.rubrubu.noteblocksustain.mixin;
 
+import com.rubrubu.noteblocksustain.audio.PendingSoundQueue;
 import com.rubrubu.noteblocksustain.config.SustainConfig;
 import com.rubrubu.noteblocksustain.sound.SoundSampleMap;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.Holder;
@@ -57,7 +57,7 @@ public abstract class ClientPacketListenerMixin {
                 packet.getZ()
         );
 
-        Minecraft.getInstance().getSoundManager().play(replacement);
+        PendingSoundQueue.enqueue(replacement);
         ci.cancel();
     }
 }
